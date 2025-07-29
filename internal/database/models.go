@@ -13,3 +13,50 @@ type Author struct {
 	Name string
 	Bio  sql.NullString
 }
+
+type Opl struct {
+	ID               int32
+	Name             string
+	Sex              sql.NullString
+	Event            sql.NullString
+	Equipment        sql.NullString
+	Age              sql.NullString
+	AgeClass         sql.NullString
+	BirthYearClass   sql.NullString
+	Division         sql.NullString
+	BodyweightKg     sql.NullString
+	WeightClassKg    sql.NullString
+	Squat1Kg         sql.NullString
+	Squat2Kg         sql.NullString
+	Squat3Kg         sql.NullString
+	Squat4Kg         sql.NullString
+	Best3SquatKg     sql.NullString
+	Bench1Kg         sql.NullString
+	Bench2Kg         sql.NullString
+	Bench3Kg         sql.NullString
+	Bench4Kg         sql.NullString
+	Best3BenchKg     sql.NullString
+	Deadlift1Kg      sql.NullString
+	Deadlift2Kg      sql.NullString
+	Deadlift3Kg      sql.NullString
+	Deadlift4Kg      sql.NullString
+	Best3DeadliftKg  sql.NullString
+	TotalKg          sql.NullString
+	Place            sql.NullString
+	Dots             sql.NullString
+	Wilks            sql.NullString
+	Glossbrenner     sql.NullString
+	Goodlift         sql.NullString
+	Tested           sql.NullBool
+	Country          sql.NullString
+	State            sql.NullString
+	Federation       sql.NullString
+	ParentFederation sql.NullString
+	MeetDate         sql.NullTime
+	MeetCountry      sql.NullString
+	MeetState        sql.NullString
+	MeetTown         sql.NullString
+	MeetName         sql.NullString
+	Sanctioned       sql.NullBool
+	CreatedAt        sql.NullTime
+}
