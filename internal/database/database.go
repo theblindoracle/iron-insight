@@ -25,7 +25,8 @@ type Service interface {
 }
 
 type service struct {
-	db *sql.DB
+	db      *sql.DB
+	queries *Queries
 }
 
 var (
@@ -38,7 +39,7 @@ var (
 	dbInstance *service
 )
 
-func New() Service {
+func NewService() Service {
 	// Reuse Connection
 	if dbInstance != nil {
 		return dbInstance
@@ -48,8 +49,10 @@ func New() Service {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	dbInstance = &service{
-		db: db,
+		db:      db,
+		queries: New(db),
 	}
 	return dbInstance
 }
