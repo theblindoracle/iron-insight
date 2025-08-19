@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"log/slog"
 	"net/http"
 	"os"
 	"strconv"
@@ -20,6 +21,19 @@ type Server struct {
 
 func NewServer() *http.Server {
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
+
+	slog.Debug("Debug message")
+
+	// logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
+	// 	Level: slog.LevelDebug, // Show debug logs
+	// }))
+
+	logger := slog.New(slog.NewJSONHandler(&PrettyJSONWriter{w: os.Stdout}, &slog.HandlerOptions{
+		Level: slog.LevelDebug,
+	}))
+
+	slog.SetDefault(logger)
+
 	NewServer := &Server{
 		port: port,
 
