@@ -2,6 +2,7 @@ package server
 
 import (
 	"encoding/json"
+	"iron-insight/internal/server/handlers"
 	"log"
 	"net/http"
 
@@ -14,12 +15,16 @@ import (
 func (s *Server) RegisterRoutes() http.Handler {
 	mux := http.NewServeMux()
 
+	oplHandler := handlers.NewOplHandler(s.db.Queries())
+
 	// Register routes
 	mux.HandleFunc("/", s.HelloWorldHandler)
 
 	mux.HandleFunc("/health", s.healthHandler)
 
 	mux.HandleFunc("/websocket", s.websocketHandler)
+
+	mux.HandleFunc("/lifter", oplHandler.GetLifterRecords)
 
 	// Wrap the mux with CORS middleware
 	return s.corsMiddleware(mux)
@@ -45,7 +50,8 @@ func (s *Server) corsMiddleware(next http.Handler) http.Handler {
 }
 
 func (s *Server) HelloWorldHandler(w http.ResponseWriter, r *http.Request) {
-	resp := map[string]string{"message": "Hello World"}
+
+	resp := map[string]string{"message": "Hello Travis"}
 	jsonResp, err := json.Marshal(resp)
 	if err != nil {
 		http.Error(w, "Failed to marshal response", http.StatusInternalServerError)

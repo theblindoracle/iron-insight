@@ -7,17 +7,16 @@ package database
 
 import (
 	"context"
-	"database/sql"
 )
 
 const getMeetDataForLifterName = `-- name: GetMeetDataForLifterName :one
 select id, name, sex, event, equipment, age, age_class, birth_year_class, division, bodyweight_kg, weight_class_kg, squat1_kg, squat2_kg, squat3_kg, squat4_kg, best3_squat_kg, bench1_kg, bench2_kg, bench3_kg, bench4_kg, best3_bench_kg, deadlift1_kg, deadlift2_kg, deadlift3_kg, deadlift4_kg, best3_deadlift_kg, total_kg, place, dots, wilks, glossbrenner, goodlift, tested, country, state, federation, parent_federation, meet_date, meet_country, meet_state, meet_town, meet_name, sanctioned, created_at from opl
-where name like $1 || '%'
+where name like $1
 order by meet_date desc
 `
 
-func (q *Queries) GetMeetDataForLifterName(ctx context.Context, dollar_1 sql.NullString) (Opl, error) {
-	row := q.db.QueryRowContext(ctx, getMeetDataForLifterName, dollar_1)
+func (q *Queries) GetMeetDataForLifterName(ctx context.Context, name string) (Opl, error) {
+	row := q.db.QueryRowContext(ctx, getMeetDataForLifterName, name)
 	var i Opl
 	err := row.Scan(
 		&i.ID,
