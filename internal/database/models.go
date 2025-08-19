@@ -8,12 +8,6 @@ import (
 	"database/sql"
 )
 
-type Author struct {
-	ID   int64
-	Name string
-	Bio  sql.NullString
-}
-
 type Opl struct {
 	ID               int32
 	Name             string
