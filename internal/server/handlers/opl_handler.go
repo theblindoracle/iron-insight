@@ -29,6 +29,8 @@ func (h *OplHandler) GetLifterRecords(w http.ResponseWriter, r *http.Request) {
 
 	resp := map[string]interface{}{"lifters": data}
 	w.Header().Set("Content-Type", "application/json")
+
+	slog.Debug("GetLifterHandler", "resp", resp)
 	if err := json.NewEncoder(w).Encode(resp); err != nil {
 		slog.Error("Could not marshall json", "data", data)
 		http.Error(w, "Failed to marshal response", http.StatusInternalServerError)

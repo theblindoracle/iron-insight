@@ -9,60 +9,76 @@ import (
 	"context"
 )
 
-const getMeetDataForLifterName = `-- name: GetMeetDataForLifterName :one
+const getMeetDataForLifterName = `-- name: GetMeetDataForLifterName :many
 select id, name, sex, event, equipment, age, age_class, birth_year_class, division, bodyweight_kg, weight_class_kg, squat1_kg, squat2_kg, squat3_kg, squat4_kg, best3_squat_kg, bench1_kg, bench2_kg, bench3_kg, bench4_kg, best3_bench_kg, deadlift1_kg, deadlift2_kg, deadlift3_kg, deadlift4_kg, best3_deadlift_kg, total_kg, place, dots, wilks, glossbrenner, goodlift, tested, country, state, federation, parent_federation, meet_date, meet_country, meet_state, meet_town, meet_name, sanctioned, created_at from opl
 where name like $1
 order by meet_date desc
 `
 
-func (q *Queries) GetMeetDataForLifterName(ctx context.Context, name string) (Opl, error) {
-	row := q.db.QueryRowContext(ctx, getMeetDataForLifterName, name)
-	var i Opl
-	err := row.Scan(
-		&i.ID,
-		&i.Name,
-		&i.Sex,
-		&i.Event,
-		&i.Equipment,
-		&i.Age,
-		&i.AgeClass,
-		&i.BirthYearClass,
-		&i.Division,
-		&i.BodyweightKg,
-		&i.WeightClassKg,
-		&i.Squat1Kg,
-		&i.Squat2Kg,
-		&i.Squat3Kg,
-		&i.Squat4Kg,
-		&i.Best3SquatKg,
-		&i.Bench1Kg,
-		&i.Bench2Kg,
-		&i.Bench3Kg,
-		&i.Bench4Kg,
-		&i.Best3BenchKg,
-		&i.Deadlift1Kg,
-		&i.Deadlift2Kg,
-		&i.Deadlift3Kg,
-		&i.Deadlift4Kg,
-		&i.Best3DeadliftKg,
-		&i.TotalKg,
-		&i.Place,
-		&i.Dots,
-		&i.Wilks,
-		&i.Glossbrenner,
-		&i.Goodlift,
-		&i.Tested,
-		&i.Country,
-		&i.State,
-		&i.Federation,
-		&i.ParentFederation,
-		&i.MeetDate,
-		&i.MeetCountry,
-		&i.MeetState,
-		&i.MeetTown,
-		&i.MeetName,
-		&i.Sanctioned,
-		&i.CreatedAt,
-	)
-	return i, err
+func (q *Queries) GetMeetDataForLifterName(ctx context.Context, name string) ([]Opl, error) {
+	rows, err := q.db.QueryContext(ctx, getMeetDataForLifterName, name)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Opl
+	for rows.Next() {
+		var i Opl
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Sex,
+			&i.Event,
+			&i.Equipment,
+			&i.Age,
+			&i.AgeClass,
+			&i.BirthYearClass,
+			&i.Division,
+			&i.BodyweightKg,
+			&i.WeightClassKg,
+			&i.Squat1Kg,
+			&i.Squat2Kg,
+			&i.Squat3Kg,
+			&i.Squat4Kg,
+			&i.Best3SquatKg,
+			&i.Bench1Kg,
+			&i.Bench2Kg,
+			&i.Bench3Kg,
+			&i.Bench4Kg,
+			&i.Best3BenchKg,
+			&i.Deadlift1Kg,
+			&i.Deadlift2Kg,
+			&i.Deadlift3Kg,
+			&i.Deadlift4Kg,
+			&i.Best3DeadliftKg,
+			&i.TotalKg,
+			&i.Place,
+			&i.Dots,
+			&i.Wilks,
+			&i.Glossbrenner,
+			&i.Goodlift,
+			&i.Tested,
+			&i.Country,
+			&i.State,
+			&i.Federation,
+			&i.ParentFederation,
+			&i.MeetDate,
+			&i.MeetCountry,
+			&i.MeetState,
+			&i.MeetTown,
+			&i.MeetName,
+			&i.Sanctioned,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
